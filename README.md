@@ -20,20 +20,21 @@
 
 ```powershell
 xelatex main.tex
-bibtex main
+biber main
 xelatex main.tex
 xelatex main.tex
 ```
 
-如果没有引用文献，可以跳过 `bibtex main`。
+如果没有引用文献，可以跳过 `biber main`。
 
 ## 文件结构
 
 - `wdslides.cls`：模板类文件，集中原来 `init/color.tex`、`init/pkg.tex`、`init/format.tex`、`init/code.tex`、`init/cmds.tex` 的功能。
-- `wdslides-meta.tex`：标题、作者、导师、单位、日期、logo、参考文献等元数据。
+- `wdslides-meta.tex`：标题、作者、导师、学院、日期、logo、参考文献等元数据；学院默认留空，封面不显示单位信息。
 - `main.tex`：slides 入口文件，只负责选择语言、加载元数据和组织章节。
 - `sections/`：正文页。
 - `assets/`：logo 等模板资源；默认仓库不强制携带二进制 logo，缺省时会显示文字标识。
+- `clean.bat`：删除 LaTeX 编译中间文件，保留源文件和生成的 PDF。
 
 ## 已保留的接口
 
