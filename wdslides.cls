@@ -27,7 +27,7 @@
 \RequirePackage{array}
 \RequirePackage{listings}
 \RequirePackage{tcolorbox}
-\RequirePackage[backend=bibtex,style=numeric]{biblatex}
+\RequirePackage[backend=biber,style=numeric]{biblatex}
 \RequirePackage{bm}
 \RequirePackage{tabularx}
 \RequirePackage{booktabs}
@@ -221,16 +221,16 @@
 \wdslides@setlocalized{author}{en}{Name}
 \wdslides@setlocalized{supervisor}{zh}{}
 \wdslides@setlocalized{supervisor}{en}{}
-\wdslides@setlocalized{institute}{zh}{}
-\wdslides@setlocalized{institute}{en}{}
+\wdslides@setlocalized{college}{zh}{}
+\wdslides@setlocalized{college}{en}{}
 \wdslides@setlocalized{date}{zh}{\today}
 \wdslides@setlocalized{date}{en}{\today}
-\wdslides@setlocalized{presenterlabel}{zh}{答辩人：}
-\wdslides@setlocalized{presenterlabel}{en}{Presenter}
-\wdslides@setlocalized{supervisorlabel}{zh}{导师：}
-\wdslides@setlocalized{supervisorlabel}{en}{Supervisor}
-\wdslides@setlocalized{institutelabel}{zh}{单位：}
-\wdslides@setlocalized{institutelabel}{en}{Institute}
+\wdslides@setlocalized{presenterlabel}{zh}{\makebox[3\ccwd][l]{答辩人}：}
+\wdslides@setlocalized{presenterlabel}{en}{Presenter:}
+\wdslides@setlocalized{supervisorlabel}{zh}{\makebox[3\ccwd][l]{导\hspace{\ccwd}师}：}
+\wdslides@setlocalized{supervisorlabel}{en}{Supervisor:}
+\wdslides@setlocalized{collegelabel}{zh}{\makebox[3\ccwd][l]{学\hspace{\ccwd}院}：}
+\wdslides@setlocalized{collegelabel}{en}{College:}
 \wdslides@setlocalized{tocname}{zh}{目录}
 \wdslides@setlocalized{tocname}{en}{Content}
 \wdslides@setlocalized{thanks}{zh}{感谢聆听！}
@@ -245,11 +245,13 @@
 \NewDocumentCommand{\wdcoverextra}{O{} m}{\wdslides@setlocalized{coverextra}{#1}{#2}}
 \NewDocumentCommand{\wdauthor}{O{} m}{\wdslides@setlocalized{author}{#1}{#2}}
 \NewDocumentCommand{\wdsupervisor}{O{} m}{\wdslides@setlocalized{supervisor}{#1}{#2}}
-\NewDocumentCommand{\wdinstitute}{O{} m}{\wdslides@setlocalized{institute}{#1}{#2}}
+\NewDocumentCommand{\wdcollege}{O{} m}{\wdslides@setlocalized{college}{#1}{#2}}
+\NewDocumentCommand{\wdinstitute}{O{} m}{\wdslides@setlocalized{college}{#1}{#2}}
 \NewDocumentCommand{\wddate}{O{} m}{\wdslides@setlocalized{date}{#1}{#2}}
 \NewDocumentCommand{\wdpresenterlabel}{O{} m}{\wdslides@setlocalized{presenterlabel}{#1}{#2}}
 \NewDocumentCommand{\wdsupervisorlabel}{O{} m}{\wdslides@setlocalized{supervisorlabel}{#1}{#2}}
-\NewDocumentCommand{\wdinstitutelabel}{O{} m}{\wdslides@setlocalized{institutelabel}{#1}{#2}}
+\NewDocumentCommand{\wdcollegelabel}{O{} m}{\wdslides@setlocalized{collegelabel}{#1}{#2}}
+\NewDocumentCommand{\wdinstitutelabel}{O{} m}{\wdslides@setlocalized{collegelabel}{#1}{#2}}
 \NewDocumentCommand{\wdtocname}{O{} m}{\wdslides@setlocalized{tocname}{#1}{#2}}
 \NewDocumentCommand{\wdthanks}{O{} m}{\wdslides@setlocalized{thanks}{#1}{#2}}
 \NewDocumentCommand{\wdfigurelabel}{O{} m}{\wdslides@setlocalized{figurelabel}{#1}{#2}}
@@ -311,14 +313,17 @@
       \titlecolorbox{\wdslides@localized{title}\ifx\wdslides@subtitle\@empty\else\\{\large\wdslides@subtitle}\fi}
     \endgroup
     \wdslides@iflocalizedempty{coverextra}{}{\titlecolorbox{\wdslides@localized{coverextra}}}
-    \vspace{3mm}
-    \begin{tabular}{>{\color{themecolor}}r@{\hspace{3pt}}l}
+    \vspace{4.5mm}
+    \begingroup
+    \renewcommand{\arraystretch}{1.25}
+    \begin{tabular}{>{\color{themecolor}}l@{\hspace{6pt}}l}
       \wdslides@localized{presenterlabel} & \wdslides@localized{author}\\
       \wdslides@iflocalizedempty{supervisor}{}{\wdslides@localized{supervisorlabel} & \wdslides@localized{supervisor}\\}
-      \wdslides@iflocalizedempty{institute}{}{\wdslides@localized{institutelabel} & \wdslides@localized{institute}\\}
+      \wdslides@iflocalizedempty{college}{}{\wdslides@localized{collegelabel} & \wdslides@localized{college}\\}
     \end{tabular}
+    \endgroup
 
-    \vspace{2mm}
+    \vspace{3mm}
     \wdslides@localized{date}
     \vfill
   \end{frame}
