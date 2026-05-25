@@ -1,0 +1,57 @@
+\section{Template Structure}
+
+\begin{frame}
+  \frametitle{Metadata First}
+  \begin{itemize}
+    \item Cover fields live in \texttt{examples/demo-meta.tex}.
+    \item Chinese and English decks share the same class and interfaces.
+    \item Color presets are selected with class options such as \texttt{green}, \texttt{brown}, and \texttt{xauat}.
+  \end{itemize}
+\end{frame}
+
+\section{Figures and Equations}
+
+\begin{frame}
+  \frametitle{TikZ Figure}
+  \begin{figure}
+    \centering
+    \begin{tikzpicture}[scale=0.85]
+      \draw[->,line width=0.5pt] (-0.2,0) -- (5.2,0) node[right] {$x$};
+      \draw[->,line width=0.5pt] (0,-0.2) -- (0,3.2) node[above] {$u$};
+      \draw[themecolor,line width=1.2pt] plot[smooth] coordinates {(0,0.35) (1,0.9) (2,1.8) (3,2.25) (4,2.45) (5,2.55)};
+      \draw[stronghighlightcolor,line width=1.2pt,dashed] plot[smooth] coordinates {(0,0.25) (1,0.7) (2,1.25) (3,1.7) (4,2.0) (5,2.2)};
+      \node[themecolor] at (3.9,2.85) {Model};
+      \node[stronghighlightcolor] at (4.1,1.65) {Baseline};
+    \end{tikzpicture}
+    \caption{Template colors can be used directly in figures.}
+  \end{figure}
+\end{frame}
+
+\begin{frame}
+  \frametitle{Formula and Citation}
+  \begin{myquote}
+    \texttt{myquote} is useful for compact claims, assumptions, or definitions.
+  \end{myquote}
+
+  \begin{equation}
+    \pder{u}{t}+u\pder{u}{x}=-\pder{p}{x}+\nu\pder{^2u}{x^2}.
+  \end{equation}
+
+  The Beamer design can be traced to \cite{tantau2004beamer}.
+\end{frame}
+
+\section{Code and References}
+
+\begin{frame}[fragile]
+  \frametitle{Code Block}
+  \begin{lstlisting}[style=python]
+def normalize(values):
+    total = sum(values)
+    return [value / total for value in values]
+  \end{lstlisting}
+\end{frame}
+
+\begin{frame}[allowframebreaks]
+  \frametitle{References}
+  \printbibliography
+\end{frame}

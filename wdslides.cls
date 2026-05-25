@@ -3,6 +3,9 @@
 
 \newif\ifwdslides@english
 \wdslides@englishfalse
+\newif\ifwdslides@autosection
+\wdslides@autosectiontrue
+\newcommand{\wdslides@theme}{blue}
 
 \PassOptionsToClass{aspectratio=169}{ctexbeamer}
 \PassOptionsToClass{10pt}{ctexbeamer}
@@ -10,6 +13,12 @@
 \DeclareOption{zh}{\wdslides@englishfalse}
 \DeclareOption{english}{\wdslides@englishtrue}
 \DeclareOption{en}{\wdslides@englishtrue}
+\DeclareOption{autosection}{\wdslides@autosectiontrue}
+\DeclareOption{noautosection}{\wdslides@autosectionfalse}
+\DeclareOption{blue}{\renewcommand{\wdslides@theme}{blue}}
+\DeclareOption{green}{\renewcommand{\wdslides@theme}{green}}
+\DeclareOption{brown}{\renewcommand{\wdslides@theme}{brown}}
+\DeclareOption{xauat}{\renewcommand{\wdslides@theme}{xauat}}
 \DeclareOption*{\PassOptionsToClass{\CurrentOption}{ctexbeamer}}
 \ProcessOptions\relax
 \LoadClass{ctexbeamer}
@@ -49,8 +58,24 @@
 \definecolor{Gold}{RGB}{255,165,0}
 
 \colorlet{darkgray}{black!70}
-\colorlet{stronghighlightcolor}{themered!150!black}
-\colorlet{themecolor}{4Blue}
+\newcommand{\wdtheme}[1]{%
+  \ifstrequal{#1}{green}{%
+    \colorlet{themecolor}{themegreen}%
+    \colorlet{stronghighlightcolor}{themered!150!black}%
+  }{%
+  \ifstrequal{#1}{brown}{%
+    \colorlet{themecolor}{xauatbrown}%
+    \colorlet{stronghighlightcolor}{themered!150!black}%
+  }{%
+  \ifstrequal{#1}{xauat}{%
+    \colorlet{themecolor}{xauatbrown}%
+    \colorlet{stronghighlightcolor}{Gold!70!black}%
+  }{%
+    \colorlet{themecolor}{4Blue}%
+    \colorlet{stronghighlightcolor}{themered!150!black}%
+  }}}%
+}
+\wdtheme{\wdslides@theme}
 
 \setbeamertemplate{navigation symbols}{}
 \setbeamertemplate{footline}[page number]
@@ -221,6 +246,8 @@
 \wdslides@setlocalized{author}{en}{Name}
 \wdslides@setlocalized{supervisor}{zh}{}
 \wdslides@setlocalized{supervisor}{en}{}
+\wdslides@setlocalized{supervisortitle}{zh}{}
+\wdslides@setlocalized{supervisortitle}{en}{}
 \wdslides@setlocalized{college}{zh}{}
 \wdslides@setlocalized{college}{en}{}
 \wdslides@setlocalized{date}{zh}{\today}
@@ -244,7 +271,14 @@
 \NewDocumentCommand{\wdsubtitle}{O{} m}{\wdslides@setlocalized{subtitle}{#1}{#2}}
 \NewDocumentCommand{\wdcoverextra}{O{} m}{\wdslides@setlocalized{coverextra}{#1}{#2}}
 \NewDocumentCommand{\wdauthor}{O{} m}{\wdslides@setlocalized{author}{#1}{#2}}
-\NewDocumentCommand{\wdsupervisor}{O{} m}{\wdslides@setlocalized{supervisor}{#1}{#2}}
+\NewDocumentCommand{\wdsupervisor}{O{} m g}{%
+  \wdslides@setlocalized{supervisor}{#1}{#2}%
+  \IfNoValueTF{#3}{%
+    \wdslides@setlocalized{supervisortitle}{#1}{}%
+  }{%
+    \wdslides@setlocalized{supervisortitle}{#1}{#3}%
+  }%
+}
 \NewDocumentCommand{\wdcollege}{O{} m}{\wdslides@setlocalized{college}{#1}{#2}}
 \NewDocumentCommand{\wdinstitute}{O{} m}{\wdslides@setlocalized{college}{#1}{#2}}
 \NewDocumentCommand{\wddate}{O{} m}{\wdslides@setlocalized{date}{#1}{#2}}
@@ -263,6 +297,23 @@
 \NewDocumentCommand{\wdbibfile}{m}{\addbibresource{#1}}
 \NewDocumentCommand{\wdthemecolor}{m}{\colorlet{themecolor}{#1}}
 \NewDocumentCommand{\wdstrongcolor}{m}{\colorlet{stronghighlightcolor}{#1}}
+\NewDocumentCommand{\wdautosectionpages}{m}{\csname wdslides@autosection#1\endcsname}
+
+\ExplSyntaxOn
+\tl_new:N \l_wdslides_name_tl
+\cs_new_protected:Npn \wdslides_format_name:n #1
+  {
+    \tl_set:Nx \l_wdslides_name_tl {#1}
+    \int_compare:nNnTF { \tl_count:N \l_wdslides_name_tl } = { 2 }
+      { \tl_item:Nn \l_wdslides_name_tl {1} \hspace{\ccwd} \tl_item:Nn \l_wdslides_name_tl {2} }
+      { \tl_use:N \l_wdslides_name_tl }
+  }
+\NewDocumentCommand{\wdformatname}{m}{\wdslides_format_name:n {#1}}
+\ExplSyntaxOff
+\newcommand{\wdslides@supervisordisplay}{%
+  \wdformatname{\wdslides@localized{supervisor}}%
+  \wdslides@iflocalizedempty{supervisortitle}{}{\hspace{0.75\ccwd}\wdslides@localized{supervisortitle}}%
+}
 
 \newcommand{\titlecolorbox}[1]{%
   \begin{tcolorbox}[colback=themecolor!8,colframe=themecolor,arc=1mm,boxrule=0.2pt,width=0.97\textwidth]
@@ -317,8 +368,8 @@
     \begingroup
     \renewcommand{\arraystretch}{1.25}
     \begin{tabular}{>{\color{themecolor}}l@{\hspace{6pt}}l}
-      \wdslides@localized{presenterlabel} & \wdslides@localized{author}\\
-      \wdslides@iflocalizedempty{supervisor}{}{\wdslides@localized{supervisorlabel} & \wdslides@localized{supervisor}\\}
+      \wdslides@localized{presenterlabel} & \wdformatname{\wdslides@localized{author}}\\
+      \wdslides@iflocalizedempty{supervisor}{}{\wdslides@localized{supervisorlabel} & \wdslides@supervisordisplay\\}
       \wdslides@iflocalizedempty{college}{}{\wdslides@localized{collegelabel} & \wdslides@localized{college}\\}
     \end{tabular}
     \endgroup
@@ -351,6 +402,9 @@
   \fi
   \renewcommand{\figurename}{\wdslides@localized{figurelabel}}%
   \renewcommand{\tablename}{\wdslides@localized{tablelabel}}%
+  \ifwdslides@autosection
+    \AtBeginSection[]{\makesection}%
+  \fi
 }
 
 \endinput
