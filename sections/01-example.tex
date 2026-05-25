@@ -1,0 +1,28 @@
+\section{模板结构}
+\makesection
+
+\begin{frame}
+  \frametitle{元数据驱动}
+  \begin{itemize}
+    \item 标题、作者、导师、单位、日期和 logo 均集中在 \texttt{wdslides-meta.tex}。
+    \item 语言由 \texttt{main.tex} 的 class 选项切换：\texttt{chinese} 或 \texttt{english}。
+    \item 原有高亮命令仍可使用：\highlight{主题强调}，\stronghighlight{强强调}。
+  \end{itemize}
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitle{数学、引用和代码}
+  \begin{myquote}
+    这个环境来自原模板的 \texttt{myquote}，适合放简短结论或定义。
+  \end{myquote}
+
+  \begin{equation}
+    \pder{u}{t} + u\pder{u}{x} = -\pder{p}{x},\qquad
+    \sn z,\ \cn z,\ \dn z
+  \end{equation}
+
+  \begin{lstlisting}[style=python]
+def hello(name):
+    return f"Hello, {name}"
+  \end{lstlisting}
+\end{frame}
